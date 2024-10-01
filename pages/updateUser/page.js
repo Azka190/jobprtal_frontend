@@ -9,8 +9,9 @@ export default function UpdateProfile() {
   const [profileData, setProfileData] = useState({
     userName: "",
     email: "",
-    address: "",
-    companyname: "",
+    edu: "",
+    skill: "",
+    exp: "",
     profileimg: "",
   });
   const [loading, setLoading] = useState(true);
@@ -43,8 +44,9 @@ export default function UpdateProfile() {
         setProfileData({
           userName: userData.username,
           email: userData.email,
-          address: userData.address || "",
-          companyname: userData.companyname || "",
+          edu: userData.edu || "",
+          skill: userData.skill || "",
+          exp: userData.exp || "",
           profileimg: userData.profileimg || "",
         });
       } catch (error) {
@@ -157,12 +159,12 @@ export default function UpdateProfile() {
 
           <div className="mb-4">
             <label className="block text-gray-700 font-semibold mb-2">
-              Address
+              Education
             </label>
             <input
               type="text"
-              name="address"
-              value={profileData.address}
+              name="edu"
+              value={profileData.edu}
               onChange={handleInputChange}
               className="w-full px-3 py-2 border rounded"
             />
@@ -170,12 +172,25 @@ export default function UpdateProfile() {
 
           <div className="mb-4">
             <label className="block text-gray-700 font-semibold mb-2">
-              Company Name
+              Skill
             </label>
             <input
               type="text"
-              name="companyname"
-              value={profileData.companyname}
+              name="skill"
+              value={profileData.skill}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Experience
+            </label>
+            <input
+              type="text"
+              name="exp"
+              value={profileData.exp}
               onChange={handleInputChange}
               className="w-full px-3 py-2 border rounded"
             />
@@ -218,7 +233,7 @@ export default function UpdateProfile() {
             </button>
             <button
               type="button"
-              onClick={() => router.push("/comProfile/page")}
+              onClick={() => router.push("/userProfile/page")}
               className="w-full bg-gray-400 text-white font-semibold py-2 rounded hover:bg-gray-500 transition duration-200"
             >
               Go Back

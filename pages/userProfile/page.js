@@ -1,6 +1,8 @@
 'use client';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import { AiOutlineLogout } from "react-icons/ai";
+
 
 export default function Profile() {
   const router = useRouter();
@@ -76,8 +78,59 @@ export default function Profile() {
   }
 
   return (
-    <div className="bg-[#629da3] flex items-center justify-center min-h-screen text-black">
-      <div className="bg-white rounded-lg w-full max-w-md p-8">
+    <div className="">
+       <div className=''>
+      <nav className="flex justify-between items-center px-10 py-5 ">
+        {/* Display the user's name */}
+        <h1 className="font-bold capitalize text-2xl">
+          {profileData?.userName || "User"}
+        </h1>
+
+        {/* Navigation Links */}
+        <ul className="flex gap-5 pr-10">
+          <li className="cursor-pointer hover:underline">
+            <a href="/allJobs/page">All Jobs</a>
+          </li>
+          <li className="cursor-pointer hover:underline">
+            <a href="/update/page">Upload CV</a>
+          </li>
+          <li className="cursor-pointer hover:underline">
+            <a href="/updateUser/page">Update Profile</a>
+          </li>
+          <li className="cursor-pointer hover:underline">
+            <a href="/applied-jobs">Applied Jobs</a>
+          </li>
+        </ul>
+
+        {/* Logout Button */}
+        <button
+          onClick={logout}
+          className="flex items-center px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 transition duration-300"
+        >
+          <AiOutlineLogout className="mr-2" /> Logout
+        </button>
+      </nav>
+    </div>
+    <div className="flex min-h-screen">
+  <div className="flex-1 flex flex-col items-center justify-center p-6 bg-[#629da3]">
+    <h1 className="text-2xl font-semibold text-white text-center mb-4">
+    One application could change everything. Start your journey today!    </h1>
+    <button 
+      className="flex items-center px-4 py-2 text-white bg-black rounded hover:bg-gray-800 transition duration-300"
+    ><a href="/allJobs/page"> All job</a>
+     
+    </button>
+  </div>
+  <div className="w-1/2">
+    <img src="/04.png" alt="Inspiring Hiring" className=" object-cover" />
+  </div>
+</div>
+
+    </div>
+  );
+}
+
+{/* <div className="bg-white rounded-lg w-full max-w-md p-8">
         <div className="text-center mb-8">
           <h1 className="font-bold font-mono text-2xl mb-4">User Profile</h1>
 
@@ -119,7 +172,4 @@ export default function Profile() {
             Logout
           </button>
         </div>
-      </div>
-    </div>
-  );
-}
+      </div> */}
