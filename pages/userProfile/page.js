@@ -92,7 +92,7 @@ export default function Profile() {
             <a href="/allJobs/page">All Jobs</a>
           </li>
           <li className="cursor-pointer hover:underline">
-            <a href="/update/page">Upload CV</a>
+            <a href="/cv/page">Upload CV</a>
           </li>
           <li className="cursor-pointer hover:underline">
             <a href="/updateUser/page">Update Profile</a>
