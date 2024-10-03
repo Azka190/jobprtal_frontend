@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 export default function JobEntry() {
   const [message, setMessage] = useState(null);
@@ -62,6 +63,42 @@ export default function JobEntry() {
     }
   };
 
+   const applyForJob = async (jobId, userId) => {
+    try {
+      const response = await axios.post("http://localhost:1337/api/applications", {
+        data: {
+          JobId: String(jobId),
+          jobs: jobId,
+          users_permissions_users: userId,
+          applicationDate: new Date().toISOString(),
+          Status: "pending",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error applying for job:",
+        error.response?.data || error.message
+      );
+      throw new Error(
+        "Failed to apply for the job: " + error.response?.data?.message ||
+          error.message
+      );
+    }
+  };
+
+  const handleApply = async (jobId) => {
+    const userId = fetchUserId();
+    if (!userId) {
+      return;
+    }
+
+    try {
+      await applyForJob(jobId, userId);
+    } catch (error) {
+    }
+  };
+
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
     filterJobs(e.target.value, filters);
@@ -81,9 +118,6 @@ export default function JobEntry() {
         job.attributes.jobtitle.toLowerCase().includes(search.toLowerCase())
       );
     }
-
-   
-
     if (filters.jobType) {
       filtered = filtered.filter((job) => job.attributes.jobtype === filters.jobType);
     }
@@ -182,7 +216,9 @@ export default function JobEntry() {
                     <td className="p-4">{job.attributes.startdate}</td>
                     <td className="p-4">{job.attributes.enddate}</td>
                     <td className="p-4">
-                      <button className="border border-black px-3 py-1">Apply</button>
+                      <button 
+                      onClick={ () => handleApply (job.id)}
+                      className="border border-black px-3 py-1">Apply</button>
                     </td>
                   </tr>
                 ))
