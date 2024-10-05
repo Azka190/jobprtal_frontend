@@ -63,39 +63,52 @@ export default function JobEntry() {
     }
   };
 
-   const applyForJob = async (jobId, userId) => {
+  const applyForJob = async (jobId, userId) => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      setMessage("You need to be logged in to apply for a job.");
+      return;
+    }
+  
     try {
-      const response = await axios.post("http://localhost:1337/api/applications", {
-        data: {
-          JobId: String(jobId),
-          jobs: jobId,
-          users_permissions_users: userId,
-          applicationDate: new Date().toISOString(),
-          Status: "pending",
+      const response = await axios.post(
+        "http://localhost:1337/api/applications", 
+        {
+          data: {
+            JobId: String(jobId),
+            jobs: jobId,
+            users_permissions_users: userId,
+            applicationDate: new Date().toISOString(),
+            Status: "pending",
+          },
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  // Add JWT token in headers
+          },
+        }
+      );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error applying for job:",
-        error.response?.data || error.message
-      );
+      console.error("Error applying for job:", error.response?.data || error.message);
       throw new Error(
-        "Failed to apply for the job: " + error.response?.data?.message ||
-          error.message
+        "Failed to apply for the job: " + (error.response?.data?.message || error.message)
       );
     }
   };
+  
 
   const handleApply = async (jobId) => {
-    const userId = fetchUserId();
     if (!userId) {
+      setMessage('User ID is not available. Please try refreshing.');
       return;
     }
-
+  
     try {
       await applyForJob(jobId, userId);
+      setMessage('You have successfully applied for this job. Your application is under process.');
     } catch (error) {
+      setMessage('Failed to apply for the job. Please try again.');
     }
   };
 
@@ -134,7 +147,7 @@ export default function JobEntry() {
   };
 
   return (
-    <div className="bg-[#629da3] flex gap-9 min-h-screen p-6 text-black">
+    <div className="bg-[#629da3] flex gap-9 min-h-screen p-10 text-black">
       <div className="flex-1 bg-white rounded-lg p-8">
         <div className="text-center mb-8">
           <h1 className="font-bold font-mono text-2xl">All Jobs</h1>
@@ -234,8 +247,14 @@ export default function JobEntry() {
               Go Back
             </button>
           </a>
+          {message && (
+      <div className=" text-center text-green-500 pt-9 mb-1">
+        {message}
+      </div>
+    )}
         </div>
       </div>
+      
     </div>
   );
 }
